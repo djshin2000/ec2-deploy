@@ -27,7 +27,6 @@ f = open(SECRETS_BASE, 'rt')
 base_text = f.read()
 f.close()
 
-# 위 결
 secrets_base = json.loads(base_text)
 # secrets_base = json.loads(open(SECRETS_BASE, 'rt').read())
 print(secrets_base)
