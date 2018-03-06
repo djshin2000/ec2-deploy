@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+export DJANGO_SETTINGS_MODULE=config.settings.dev
 # Nginx에 존재하던 모든 enabled 서버 설정 링크 삭제
 sudo rm -rf /etc/nginx/sites-enabled/*
 # 프로젝트의 Nginx설정 (nginx-app.conf)를 복사
@@ -10,6 +11,7 @@ sudo cp -f /srv/ec2-deploy/.config/uwsgi.service /etc/systemd/system/uwsgi.servi
 # collectstatic을 위한 과정
 cd /srv/ec2-deploy/app
 # ubuntu유저로 collectstatic명령어를 실행 (deploy스크립트가 root권한으로 실행되므로)
+export DJANGO_SETTINGS_MODULE=config.settings.dev
 /bin/bash -c \
 '/home/ubuntu/.pyenv/versions/fc-ec2-deploy/bin/python \
 /srv/ec2-deploy/app/manage.py collectstatic --noinput' ubuntu
