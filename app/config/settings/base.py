@@ -13,8 +13,47 @@ import json
 import os
 import raven
 
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ROOT_DIR = os.path.dirname(BASE_DIR)
+
+# Static
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(ROOT_DIR, '.static')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(ROOT_DIR, '.media')
+
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    STATIC_DIR,
+]
+
+# ec2-deploy/.secrets
+SECRETS_DIR = os.path.join(ROOT_DIR, '.secrets')
+# ec2-deploy/.secrets/base.json
+SECRETS_BASE = os.path.join(SECRETS_DIR, 'base.json')
+SECRETS_LOCAL = os.path.join(SECRETS_DIR, 'local.json')
+SECRETS_DEV = os.path.join(SECRETS_DIR, 'dev.json')
+
+# base.json 파일을 읽어온 결과
+f = open(SECRETS_BASE, 'rt')
+base_text = f.read()
+f.close()
+
+secrets_base = json.loads(base_text)
+# secrets_base = json.loads(open(SECRETS_BASE, 'rt').read())
+# print(secrets_base)
+
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = secrets_base['SECRET_KEY']
+
+
 RAVEN_CONFIG = {
-    'dsn': 'https://1f6fb5c0bea241bf96d08a8634e3280c:a601ca1d030941cba6a43d5e2b2c1a75@sentry.io/298213',
+    'dsn': secrets_base['RAVEN_DSN'],
     # If you are using git, you can also automatically configure the
     # release based on the git info.
     'release': raven.fetch_git_sha(os.path.abspath(os.pardir)),
@@ -64,50 +103,6 @@ LOGGING = {
     },
 }
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ROOT_DIR = os.path.dirname(BASE_DIR)
-
-# Static
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(ROOT_DIR, '.static')
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(ROOT_DIR, '.media')
-
-STATIC_DIR = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [
-    STATIC_DIR,
-]
-
-# ec2-deploy/.secrets
-SECRETS_DIR = os.path.join(ROOT_DIR, '.secrets')
-# ec2-deploy/.secrets/base.json
-SECRETS_BASE = os.path.join(SECRETS_DIR, 'base.json')
-
-# base.json 파일을 읽어온 결과
-f = open(SECRETS_BASE, 'rt')
-base_text = f.read()
-f.close()
-
-secrets_base = json.loads(base_text)
-# secrets_base = json.loads(open(SECRETS_BASE, 'rt').read())
-# print(secrets_base)
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secrets_base['SECRET_KEY']
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-ALLOWED_HOSTS = [
-    'localhost',
-    '.ap-northeast-2.compute.amazonaws.com',
-]
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -156,12 +151,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 
 # Password validation
