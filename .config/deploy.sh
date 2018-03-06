@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-export DJANGO_SETTINGS_MODULE=config.settings.dev
+export DJANGO_SETTINGS_MODULE=config.settings.production
 # Nginx에 존재하던 모든 enabled 서버 설정 링크 삭제
 sudo rm -rf /etc/nginx/sites-enabled/*
 # 프로젝트의 Nginx설정 (nginx-app.conf)를 복사
