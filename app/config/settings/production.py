@@ -7,3 +7,4 @@ ALLOWED_HOSTS = [
     '.amazonaws.com',
 ]
 DATABASES = secrets['DATABASES']
+WSGI_APPLICATION = 'config.wsgi.production.application'

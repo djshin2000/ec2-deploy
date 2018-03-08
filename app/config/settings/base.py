@@ -52,14 +52,23 @@ secrets_base = json.loads(base_text)
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = secrets_base['SECRET_KEY']
 
+# AWS
+AWS_ACCESS_KEY_ID = secrets_base['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = secrets_base['AWS_SECRET_ACCESS_KEY']
+AWS_STORAGE_BUCKET_NAME = secrets_base['AWS_STORAGE_BUCKET_NAME']
+# AWS_S3_ENDPOINT_URL = 'https://s3.ap-northeast-2.amazonaws.com'
+# 파일의 읽기 원한을 없앰
+AWS_DEFAULT_ACL = 'private'
+AWS_S3_REGION_NAME = 'ap-northeast-2'
+AWS_S3_SIGNATURE_VERSION = 's3v4'
 
+# Sentry
 RAVEN_CONFIG = {
     'dsn': secrets_base['RAVEN_DSN'],
     # If you are using git, you can also automatically configure the
     # release based on the git info.
     'release': raven.fetch_git_sha(os.path.abspath(os.pardir)),
 }
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
@@ -113,8 +122,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'django_extensions',
     'raven.contrib.django.raven_compat',
+    'storages',
+
     'photos',
 ]
 
@@ -145,8 +157,6 @@ TEMPLATES = [
         },
     },
 ]
-
-WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # Database
